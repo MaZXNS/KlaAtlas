@@ -127,13 +127,13 @@ def plot_localization(ax: mpl.axes.Axes, frame: pd.DataFrame) -> None:
     panel_label(ax, "a")
     ax.text(0.01, 0.93, f"{int(frame['denominator_human_atlas_proteins'].iloc[0]):,} proteins; {int(frame['denominator_human_primary_sites'].iloc[0]):,} reported sites",
             transform=ax.transAxes, fontsize=7, color="#4A5560", ha="left", va="center")
-    # The editable cell locator is kept entirely on the left.
+    # Cell diagram.
     cell_ax = ax.inset_axes([0.01, 0.13, 0.28, 0.67])
     draw_cell(cell_ax)
     ax.text(0.15, 0.075, "Cell schematic", transform=ax.transAxes,
             fontsize=7, color="#596269", ha="center", va="center")
 
-    # The original statistical bars are retained on the right.
+    # Localization bars.
     bar_ax = ax.inset_axes([0.69, 0.13, 0.30, 0.65])
     y = np.arange(len(data))[::-1]
     colors = [explicit[name] for name in data["category"]]

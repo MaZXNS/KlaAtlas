@@ -36,7 +36,7 @@ class ExactConditional:
     """Stable exact conditional likelihood, accelerated with a local C kernel."""
 
     def __init__(self, cache_dir: Path):
-        """Compile a content-addressed local kernel; no package/network download."""
+        """Compile the conditional-likelihood kernel."""
         source=Path(__file__).with_name('conditional_kernel.c')
         digest=hashlib.sha256(source.read_bytes()).hexdigest()[:16]
         cache_dir.mkdir(parents=True,exist_ok=True)
@@ -67,7 +67,7 @@ class ExactConditional:
         return float(loss[0]),gradient,scores,ll
 
 def prepare_data(frame: pd.DataFrame, features: list[str]) -> ConditionalData:
-    """Keep matched strata with both labels; drop only within-stratum invariant columns."""
+    """Prepare matched strata and variable features."""
     ordered=frame.sort_values(['protein_unit_id','position_decile','k_position']).copy()
     ordered['_input_row_index']=ordered.index
     keys=['protein_unit_id','position_decile']

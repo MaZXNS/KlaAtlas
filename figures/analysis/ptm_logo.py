@@ -27,12 +27,8 @@ COLORS = {**{a: "#2F6DB0" for a in "KRH"},
 KEYS = ["protein_unit_id", "reference_sequence_id", "k_position"]
 
 def preference_heights(counts: pd.DataFrame, background: pd.DataFrame) -> pd.DataFrame:
-    """Return signed favored/complement-disfavored bits from PTM-Logo.
-
-    No pseudocount, sample-size correction, renormalization or display cutoff.
-    The original complement denominator 0.999999999-q is retained. Center K
-    is a conditioning label, not an estimated preference, and has height zero.
-    The zero-observation convention is the Java implementation's zero term.
+    """Calculate signed PTM-Logo heights with pseudocount 0 and denominator 0.999999999-q.
+    The aligned central K and zero-observation terms have height zero.
     """
     if not counts.index.equals(background.index) or list(counts.columns) != AA or list(background.columns) != AA:
         raise ValueError("Foreground/background must have identical positions and 20 ordered AA columns")
@@ -53,8 +49,7 @@ def preference_heights(counts: pd.DataFrame, background: pd.DataFrame) -> pd.Dat
     favored[observed] = pf[observed] * np.log2(pf[observed] / qf[observed])
     complement = observed & (pf < 1)
     disfavored[complement] = (1-pf[complement]) * np.log2((1-pf[complement]) / (.999999999-qf[complement]))
-    # Explicit direction prevents the original 1e-9 guard producing an
-    # artificial disfavored glyph when foreground equals background exactly.
+    # Equal foreground/background frequencies give zero height.
     values = np.where(pf > qf, np.maximum(favored, 0),
                       np.where(pf < qf, -np.maximum(disfavored, 0), 0))
     result = pd.DataFrame(0., index=counts.index, columns=AA)
@@ -63,7 +58,7 @@ def preference_heights(counts: pd.DataFrame, background: pd.DataFrame) -> pd.Dat
     return result
 
 def window_counts(windows: pd.Series) -> pd.DataFrame:
-    """Count complete 21-aa K-centered windows without implicit exclusions."""
+    """Count complete 21-aa K-centered windows."""
     if windows.empty or windows.isna().any() or not windows.str.fullmatch("[ACDEFGHIKLMNPQRSTVWY]{21}").all() or not windows.str[10].eq("K").all():
         raise ValueError("Expected complete canonical 21-aa windows with central K")
     array = np.frombuffer("".join(windows).encode("ascii"), dtype="S1").reshape(-1, 21)
@@ -72,11 +67,8 @@ def window_counts(windows: pd.Series) -> pd.DataFrame:
     return counts
 
 def build_ptm_logo(cases: pd.DataFrame, background_windows: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    """Use all complete K opportunities in the exact foreground proteins.
-
-    Deduplication is by taxon/accession encoded protein_unit_id, reference ID
-    and K position, not peptide sequence. The background contains the cases;
-    unreported lysines are not assigned a verified-unmodified label.
+    """Build the logo using complete K windows from foreground proteins.
+    Windows are identified by protein_unit_id, reference ID and K position.
     """
     for table in (cases, background_windows):
         if not set(KEYS + ["window"]).issubset(table.columns):

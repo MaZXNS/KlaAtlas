@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run KlaAtlas analyses and draw figures from the single frozen database."""
+"""Run KlaAtlas analyses and generate figures."""
 from __future__ import annotations
 import argparse,importlib,json,shutil,sqlite3,sys,tempfile,subprocess,time
 from datetime import datetime,timezone
@@ -15,7 +15,7 @@ import pipeline
 
 
 def run_analysis(database:Path,inputs:Path,output:Path,figures:list[str]) -> None:
-    """Calculate each selected figure's results using its original frozen populations."""
+    """Calculate the results for the selected figures."""
     pipeline.DATABASE=database
     if '1' in figures:pipeline.resource_analysis(inputs,output)
     if '2' in figures:
@@ -30,13 +30,13 @@ def run_analysis(database:Path,inputs:Path,output:Path,figures:list[str]) -> Non
 
 
 def table(source:Path,destination:Path) -> None:
-    """Place one required result in a temporary drawing directory; never silently substitute."""
+    """Copy a result table to the plotting directory."""
     if not source.is_file():raise FileNotFoundError(f'Required analysis result not produced: {source.name}')
     destination.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,destination)
 
 
 def drawing_inputs(inputs:Path,analysis:Path|None,destination:Path,figures:list[str]) -> None:
-    """Use generated results for all scientific panels, or explicitly select database results."""
+    """Prepare the selected plotting inputs."""
     mapping={
       '1':[('counts.json','inputs/figure_1/01_SUMMARY.json','resource/SUMMARY.json'),('taxon_counts.tsv','inputs/figure_1/02_TAXON_RESOURCE_COUNTS.tsv','resource/TAXON_RESOURCE_COUNTS.tsv'),('publication_years.tsv','inputs/figure_1/03_PUBLICATION_YEAR_AND_FIRST_COORDINATE.tsv','resource/PUBLICATION_YEAR_AND_FIRST_COORDINATE.tsv'),('source_accumulation.tsv','inputs/figure_1/04_SOURCE_ORDER_DECOMPOSITION.tsv','resource/SOURCE_ORDER_DECOMPOSITION.tsv'),('position_agreement.tsv','inputs/figure_1/05_PAIR_POSITION_CONSISTENCY.tsv','resource/p017/PAIR_POSITION_CONSISTENCY.tsv')],
       '2':[('coverage.tsv.gz','inputs/figure_2/01_P001_PROTEIN_COVERAGE.tsv.gz','position/P001_PROTEIN_COVERAGE.tsv.gz'),('positions.tsv','inputs/figure_2/02_global_unknown_position_summary.tsv','position/global_unknown_position_summary.tsv'),('terminal_tests.tsv','inputs/figure_2/03_global_unknown_group_omnibus.tsv','position/global_unknown_group_omnibus.tsv'),('clustering.tsv','inputs/figure_2/04_P045_BURDEN_MULTISCALE_BOOTSTRAP.tsv','clustering/P045_BURDEN_MULTISCALE_BOOTSTRAP.tsv'),('length_profiles.tsv','inputs/figure_2/05_LENGTH_ASSOCIATION_CURVES.tsv','peptide/LENGTH_ASSOCIATION_CURVES.tsv'),('peptide_geometry.tsv','inputs/figure_2/06_GEOMETRY_CONSISTENT_END_PROFILES.tsv','peptide/GEOMETRY_CONSISTENT_END_PROFILES.tsv'),('localization.tsv','inputs/figure_2/07_P035_GEOMETRY_SCORE_CELLS.tsv','peptide/P035_GEOMETRY_SCORE_CELLS.tsv')],
@@ -48,8 +48,7 @@ def drawing_inputs(inputs:Path,analysis:Path|None,destination:Path,figures:list[
         for name,frozen,calculated in mapping.get(figure,[]):table(analysis/calculated if analysis is not None else inputs/frozen,target/name)
         if figure=='1':table(inputs/'inputs/figure_1/Figure_1a_SOURCE_TEXT.json',target/'selection.json')
         if figure=='4':
-            # RSA values are the same frozen model covariates used by the analysis;
-            # binning is a drawing step, not a substitute for the statistical fit.
+            # Build the RSA density profiles.
             frame=pd.read_csv(inputs/'inputs/figure_4/P072_SOURCE_DATA.tsv.gz',sep='\t',usecols=['residue_rsa','is_kla']);edges=np.linspace(0,1.25,36);rows=[]
             for label,group in frame.groupby('is_kla'):
                 density,_=np.histogram(group.residue_rsa,edges,density=True)
@@ -63,7 +62,7 @@ def drawing_inputs(inputs:Path,analysis:Path|None,destination:Path,figures:list[
 
 
 def draw(figure:str,data:Path,output:Path) -> None:
-    """Draw the existing layouts, retaining fixed workflow and interface material."""
+    """Draw the selected figure."""
     output.mkdir(parents=True,exist_ok=True)
     if figure=='1':
         with tempfile.TemporaryDirectory(prefix='klaatlas_panels_') as directory:
@@ -76,17 +75,17 @@ def draw(figure:str,data:Path,output:Path) -> None:
                     else:combined.insert_pdf(original)
             combined.save(output/'Figure_1.pdf',garbage=4,deflate=True);combined.close()
     elif figure=='S1':
-        source=ROOT/'images/Figure_S1.pdf';target=output/'Figure_S1.pdf'
+        source=ROOT/'figures/Figure_S1.pdf';target=output/'Figure_S1.pdf'
         if source.exists():
             if source.resolve()!=target.resolve():shutil.copy2(source,target)
         else:
             import pymupdf
-            with pymupdf.open(ROOT/'assets/Figure_S1.svg') as document:target.write_bytes(document.convert_to_pdf())
+            with pymupdf.open(ROOT/'figures/Figure_S1.svg') as document:target.write_bytes(document.convert_to_pdf())
     else:importlib.import_module('figure'+figure).draw(data/('F'+figure),output)
 
 
 def main() -> None:
-    """Run analysis, plot frozen results explicitly, or execute both stages."""
+    """Run the selected analysis and plotting stages."""
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--stage',choices=['analysis','plot','all'],default='all')
     parser.add_argument('--figure',choices=['all','1','2','3','4','5','S1'],default='all')
@@ -102,14 +101,14 @@ def main() -> None:
         inputs=Path(directory);manifest=restore(database,inputs)
         if args.stage!='plot':
             if scientific_figures:run_analysis(database,inputs,output/'analysis',figures)
-            else:print('Selected figures are fixed visual material and have no statistical analysis stage.',flush=True)
+            else:print('Selected visual sources are ready.',flush=True)
         if args.stage!='analysis':
-            if not scientific_figures:print('Drawing fixed visual material; no statistical analysis.',flush=True)
-            elif args.stage=='plot':print('Drawing explicitly from existing calculated results; no model fitting.' if args.analysis_dir else 'Drawing explicitly from frozen database results; no model fitting.',flush=True)
-            else:print('Drawing from the results generated by this run; no result fallback.',flush=True)
+            if not scientific_figures:print('Drawing the visual sources.',flush=True)
+            elif args.stage=='plot':print('Drawing from the analysis results.' if args.analysis_dir else 'Drawing from the database.',flush=True)
+            else:print('Drawing the analysis results.',flush=True)
             data=inputs/'drawing';drawing_inputs(inputs,output/'analysis' if args.stage=='all' else args.analysis_dir.resolve() if args.analysis_dir else None,data,figures)
             for figure in figures:draw(figure,data,output/'figures');print('Figure '+figure+' complete',flush=True)
-    # Scientific provenance accompanies derived results, without a separate test tool.
+    # Record the run parameters and software versions.
     import importlib.metadata
     parameters={'F1':{'source_orders':200,'seed':20260912,'pair_null_draws':999,'pair_seed':20260919},'F2':{'position_draws':999,'position_seed':20260919,'clustering_draws_per_protein':10000,'clustering_seed':20260904,'bootstrap_replicates':1000,'bootstrap_seed':20260919,'window_widths':[10,20,30,50,100]},'F3':{'sequence_BH_family':400,'paired_contrast_BH_family':200,'histone_BH_family_per_scenario':12},'F4':{'compartment_BH_family':28,'RSA_bootstrap':1000,'RSA_bootstrap_seed':20260922,'RSA_conditional_method':'R survival::clogit Efron','RSA_thresholds':[90,70],'enrichment_term_size':[10,500],'enrichment_BH':'within study x annotation namespace'}}
     environment={'python':sys.version.split()[0],**{name:importlib.metadata.version(name) for name in ['numpy','pandas','scipy','statsmodels','matplotlib','patsy','logomaker','PyMuPDF']}}
