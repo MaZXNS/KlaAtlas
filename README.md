@@ -12,7 +12,7 @@ KlaAtlas is a cross-species resource for exploring lysine lactylation at protein
 
 ```sh
 git lfs install
-git clone https://github.com/MforMegaptera/KlaAtlas.git
+git clone https://github.com/MaZXNS/KlaAtlas.git
 cd KlaAtlas
 git lfs pull
 ```
