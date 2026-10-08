@@ -1,0 +1,8 @@
+numpy==2.4.6
+pandas==3.0.5
+scipy==1.17.1
+statsmodels==0.14.6
+matplotlib==3.11.1
+logomaker==0.8.7
+patsy==1.0.2
+PyMuPDF==1.28.2
