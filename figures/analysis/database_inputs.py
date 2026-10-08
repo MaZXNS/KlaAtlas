@@ -1,11 +1,11 @@
-"""Restore selected frozen scientific inputs to a temporary working directory."""
+"""Load the selected analysis inputs from SQLite."""
 from __future__ import annotations
 import csv,gzip,hashlib,sqlite3,zlib
 from pathlib import Path
 
 
 def restore(database: Path, destination: Path, paths: list[str]|None=None) -> list[dict]:
-    """Read exact registered content and core-derived inputs without online access."""
+    """Read the registered inputs and core-derived records."""
     manifest=[]
     with sqlite3.connect(f'file:{database.resolve()}?mode=ro',uri=True) as connection:
         for path,digest,codec,payload in connection.execute('SELECT f.original_path,f.sha256,c.storage_codec,c.payload FROM analysis_files f JOIN frozen_content c ON c.content_sha256=f.sha256 ORDER BY f.original_path'):

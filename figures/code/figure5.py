@@ -79,7 +79,7 @@ def draw(data: Path, output: Path) -> None:
         x=xp(tick);text(b,x,30,str(tick),7.2,color=COL['muted'],ha='center');b.plot([x,x],[45,111],color=COL['line'],lw=.5,ls=(0,(1.5,3)))
     box(b,x0,33,x1-x0,1.5,face='#eaf5f1',edge=COL['teal'],radius=.5,lw=.65);text(b,1,33.75,'Reference',7.6,color=COL['muted'])
     sites=tracks['sites'];assert [s['position'] for s in sites]==sorted(s['position'] for s in sites)
-    # A pseudocount of 1 keeps the display-only logarithm positive; counts are unchanged.
+    # Marker size uses log2(evidence_count + 1).
     assert all(s['evidence_count'] + 1 > 0 for s in sites)
     label_sites={5,27,61,86,107,139,162,186,215,251,334}
     for s in sites:

@@ -1,4 +1,4 @@
-"""Calculate figure results from frozen database inputs with the original model specifications."""
+"""Calculate the figure results from database inputs."""
 from __future__ import annotations
 import argparse, importlib, json, shutil, sqlite3, subprocess, sys, tempfile, time, platform
 from pathlib import Path
@@ -17,16 +17,13 @@ def invoke(module: str, args: list[str]) -> None:
         sys.argv = old
 
 def save(d: pd.DataFrame, p: Path) -> None:
-    """Write reproducible tables without a dataframe index."""
+    """Write result tables."""
     p.parent.mkdir(parents=True, exist_ok=True)
     d.to_csv(p, sep='\t', index=False, na_rep='NA', compression={'method': 'gzip', 'mtime': 0} if p.suffix == '.gz' else None)
 
 def basis_from_frozen(frame: pd.DataFrame, column: str, prefix: str, params: dict) -> tuple:
-    """Recover the original centered natural-spline transform from its frozen design rows.
-
-    The original knots and boundaries are frozen. The linear map from the full
-    natural basis to the stored centered basis is solved and checked against
-    every input row; it is never estimated from outcome labels or fitted beta.
+    """Recover the centered natural-spline transform from the stored design rows,
+    knots and boundaries.
     """
     import patsy
     x = np.log1p(frame[column].to_numpy(float))
@@ -45,7 +42,7 @@ def basis_from_frozen(frame: pd.DataFrame, column: str, prefix: str, params: dic
     return (design.design_info, transform, names, params, error)
 
 def peptide_analysis(inp: Path, out: Path) -> None:
-    """Refit all three length models and the interval model from frozen informative rows."""
+    """Fit the three peptide-length models and the interval model."""
     import exact_conditional as exact, peptide_models as pm, patsy
     kernel = exact.ExactConditional(out / 'runtime')
     p = inp / 'inputs/position/peptide_localization'
@@ -90,7 +87,7 @@ def peptide_analysis(inp: Path, out: Path) -> None:
                 se = np.sqrt(max(0, full @ model['cov'] @ full))
                 geom.append(dict(peptide_length=length, N_distance=N[i], C_distance=C[i], relative_N_position=N[i] / (length - 1), reference_N_position=(length - 1) / 2, log2_relative_or=be / np.log(2), ci95_lower=(be - 1.96 * se) / np.log(2), ci95_upper=(be + 1.96 * se) / np.log(2), display_role='geometry-consistent_model_profile_not_a_measured_peptide'))
         save(pd.DataFrame(geom), dest / 'GEOMETRY_CONSISTENT_END_PROFILES.tsv')
-        (dest / 'SPLINE_RECOVERY.json').write_text(json.dumps({'algorithm': 'linear basis transform from frozen stored design rows; no label dependence', 'maximum_design_error': error, 'transform': T.tolist()}, indent=2))
+        (dest / 'SPLINE_RECOVERY.json').write_text(json.dumps({'algorithm': 'Centered spline basis transform', 'maximum_design_error': error, 'transform': T.tolist()}, indent=2))
     except Exception as err:
         raise
     obs = pd.read_csv(p / 'P035_ALL_TARGET_BOUND_SCORE_OBSERVATIONS.tsv.gz', sep='\t')

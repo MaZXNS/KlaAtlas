@@ -54,7 +54,7 @@ def panel_label(axis: plt.Axes, letter: str) -> None:
     )
 
 def draw_ptm_logo(axis: plt.Axes, heights: pd.DataFrame, colors: dict[str, str]) -> None:
-    """Draw the unchanged directional flank preferences and separate centre K marker."""
+    """Draw the flank preferences and central K marker."""
     logomaker.Logo(
         heights, ax=axis, color_scheme=colors, font_name="Arial", font_weight="bold",
         stack_order="big_on_top", center_values=False, fade_probabilities=False,

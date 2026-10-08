@@ -43,7 +43,7 @@ def fitting(frame:pd.DataFrame,features:list,name:str,out:Path,exact:object,kern
     save(pd.DataFrame(rows),out/(name+'_EFFECTS.tsv'));save(f,out/(name+'_INFORMATIVE_ROWS.tsv.gz'));(out/(name+'_MODEL.json')).write_text(json.dumps(meta,indent=2,default=str));print(name,meta['status'],meta['reported_rows'],meta['proteins'],flush=True);return result
 
 def spline_frames(frames:dict,column:str,prefix:str,knots:list)->tuple[dict,object]:
-    """Create one centered natural-cubic basis from shared opportunity covariates, without labels."""
+    """Create a centered natural-cubic basis from the opportunity covariates."""
     x=np.concatenate([np.log1p(f[column].to_numpy()) for f in frames.values()]);lo=float(x.min());hi=float(x.max());kn=tuple(float(np.log1p(z)) for z in knots if lo<np.log1p(z)<hi);dm=patsy.dmatrix('cr(x, knots=kn, lower_bound=lo, upper_bound=hi, constraints="center") - 1',dict(x=x,kn=kn,lo=lo,hi=hi));design=dm.design_info;start=0;names=[prefix+str(i) for i in range(dm.shape[1])];out={}
     for label,f in frames.items():
         g=f.copy();arr=np.asarray(dm)[start:start+len(f)];start+=len(f)

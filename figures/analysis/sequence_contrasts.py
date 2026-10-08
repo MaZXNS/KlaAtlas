@@ -19,7 +19,7 @@ from statsmodels.stats.meta_analysis import combine_effects
 AA='ACDEFGHIKLMNPQRSTVWY'
 
 def prepare(frame: pd.DataFrame) -> tuple[pd.DataFrame,np.ndarray,np.ndarray,np.ndarray,np.ndarray,np.ndarray]:
-    """Enumerate informative matched strata and protein clusters without control reuse."""
+    """Enumerate informative matched strata and protein clusters."""
     keys=['protein_unit_id','position_decile']
     frame=frame.sort_values(keys).copy()
     groups=frame.groupby(keys,sort=False).is_kla.agg(['size','sum'])

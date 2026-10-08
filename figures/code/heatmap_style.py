@@ -31,7 +31,7 @@ def panel_label(ax: plt.Axes, label: str) -> None:
     ax.text(-0.03, 1.025, label, transform=ax.transAxes, fontsize=10.5, fontweight="bold", ha="right", va="bottom")
 
 def wrap_label(label: str, width: int = 29) -> str:
-    """Wrap a long term label without altering its wording."""
+    """Wrap a long term label."""
     return "\n".join(textwrap.wrap(str(label), width=width, break_long_words=False))
 
 HEAT_CMAP.set_bad("#E4E7E9")

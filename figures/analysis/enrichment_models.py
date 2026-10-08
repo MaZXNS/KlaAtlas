@@ -1,4 +1,4 @@
-"""Frozen-population functional models with study-by-namespace BH correction."""
+"""Functional models with study-by-namespace BH correction."""
 
 from __future__ import annotations
 
@@ -126,7 +126,7 @@ def fisher_exact(a: int, b: int, c: int, d: int) -> dict[str, object]:
             "fisher_p": p_value,
             "fisher_status": "conditional_exact",
         }
-    except Exception as exc:  # pragma: no cover - defensive carrier
+    except Exception as exc:
         return {
             "fisher_or": np.nan,
             "fisher_ci_low": np.nan,

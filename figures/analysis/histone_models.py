@@ -38,7 +38,7 @@ def load(path: Path) -> Any:
     return module
 
 def fit_group(frame: pd.DataFrame, group: str, features: list[str], exact: Any, kernel: Any) -> tuple[list[dict], dict, pd.DataFrame]:
-    """Fit one group; retain original diagnostics and NA rather than unstable values."""
+    """Fit one group and record diagnostics."""
     data=exact.prepare_data(frame,features)
     fit=exact.fit_conditional(kernel,data,maxiter=300)
     used=frame.loc[data.row_index].copy()
@@ -56,7 +56,7 @@ def fit_group(frame: pd.DataFrame, group: str, features: list[str], exact: Any, 
     return rows,meta,used
 
 def main() -> None:
-    """Write all original and overlap results without selecting by significance."""
+    """Write both model scenarios."""
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--opportunities',type=Path,required=True)
     ap.add_argument('--output',type=Path,required=True)
@@ -93,5 +93,5 @@ def main() -> None:
     pd.concat(results,ignore_index=True).to_csv(a.output/'EFFECTS.tsv',sep='\t',index=False)
     pd.DataFrame(flows).to_csv(a.output/'DENOMINATORS.tsv',sep='\t',index=False)
     (a.output/'DIAGNOSTICS.json').write_text(json.dumps(diagnostics,indent=2)+'\n')
-    meta={'input':str(a.opportunities),'input_sha256':hashlib.sha256(a.opportunities.read_bytes()).hexdigest(),'exact_module':str(a.exact_module),'exact_module_sha256':hashlib.sha256(a.exact_module.read_bytes()).hexdigest(),'python':platform.python_version(),'numpy':np.__version__,'pandas':pd.__version__,'membership':a.membership,'fixed_BH_family_per_scenario':12,'scaling':'unchanged frozen parent','contrast_SE':'sqrt(var_histone+var_other), disjoint groups'}
+    meta={'input':str(a.opportunities),'input_sha256':hashlib.sha256(a.opportunities.read_bytes()).hexdigest(),'exact_module':str(a.exact_module),'exact_module_sha256':hashlib.sha256(a.exact_module.read_bytes()).hexdigest(),'python':platform.python_version(),'numpy':np.__version__,'pandas':pd.__version__,'membership':a.membership,'fixed_BH_family_per_scenario':12,'scaling':'stored population standardization','contrast_SE':'sqrt(var_histone+var_other), disjoint groups'}
     (a.output/'RUN.json').write_text(json.dumps(meta,indent=2)+'\n')

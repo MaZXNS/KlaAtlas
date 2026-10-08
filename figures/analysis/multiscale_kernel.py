@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 
 class MultiscaleKernel:
-    """Compile a local fixed-count permutation kernel without touching V2."""
+    """Compile the fixed-count permutation kernel."""
     def __init__(self,cache:Path):
         source=Path(__file__).with_name('multiscale_kernel.c')
         self.sha=hashlib.sha256(source.read_bytes()).hexdigest()
