@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate KlaAtlas Figures 1-4 from the compact database, and copy static visual sources."""
+"""Generate KlaAtlas analysis figures from the compact database."""
 from __future__ import annotations
 
 import argparse
@@ -7,7 +7,6 @@ import hashlib
 import importlib.metadata
 import json
 import os
-import shutil
 import sqlite3
 import sys
 import tempfile
@@ -19,7 +18,6 @@ import pymupdf
 ROOT = Path(__file__).resolve().parent
 CODE = ROOT / 'code'
 STATIC = ROOT / 'figures'
-AUTHOR_PANEL = ROOT / 'assets' / 'Figure_1a_User_Reviewed_FORMATTED.pdf'
 
 
 def extract_inputs(database: Path, destination: Path, figures: list[str]) -> list[dict[str, str]]:
@@ -40,12 +38,10 @@ def extract_inputs(database: Path, destination: Path, figures: list[str]) -> lis
     return inputs
 
 
-def combine_figure1(panel_pdf: Path, output: Path) -> None:
-    """Keep the author-approved first page and place the redrawn panels b–f."""
-    with pymupdf.open(AUTHOR_PANEL) as author, pymupdf.open(panel_pdf) as redrawn, \
-            pymupdf.open(STATIC / 'Figure_1.pdf') as reference, pymupdf.open() as combined:
-        combined.insert_pdf(author)
-        rect = reference[1].rect
+def fit_figure1(panel_pdf: Path, output: Path) -> None:
+    """Place overview panels on the reference page geometry."""
+    with pymupdf.open(panel_pdf) as redrawn, pymupdf.open(STATIC / 'Figure_1.pdf') as reference, pymupdf.open() as combined:
+        rect = reference[0].rect
         page = combined.new_page(width=rect.width, height=rect.height)
         page.show_pdf_page(page.rect, redrawn, 0)
         combined.save(output / 'Figure_1.pdf', garbage=4, deflate=True)
@@ -71,7 +67,7 @@ def draw_scientific(data: Path, output: Path, figures: list[str]) -> None:
 
     if '1' in figures:
         figure1bf.render_panels_bf(data / 'F1', data)
-        combine_figure1(data / 'Figure_1b_f.pdf', output)
+        fit_figure1(data / 'Figure_1b_f.pdf', output)
     if '2' in figures:
         figure2.draw(data / 'F2', output)
     if '3' in figures:
@@ -81,24 +77,12 @@ def draw_scientific(data: Path, output: Path, figures: list[str]) -> None:
         figure4.draw(data / 'F4', output)
 
 
-def copy_static(output: Path, figure: str) -> list[str]:
-    """Copy the fixed submission assets for the selected output."""
-    names = []
-    if figure in ('5', 'all'):
-        names.append('Figure_5.pdf')
-    if figure == 'all':
-        names.extend(['Supporting_Information.pdf', 'TOC_Graphic.pdf'])
-    for name in names:
-        shutil.copy2(STATIC / name, output / name)
-    return names
-
-
 def main() -> None:
     """Draw selected figures without replacing the frozen source assets."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--database', type=Path, default=ROOT / 'database' / 'klaatlas.sqlite')
     parser.add_argument('--output', type=Path, default=ROOT / 'generated_figures')
-    parser.add_argument('--figure', choices=['all', '1', '2', '3', '4', '5'], default='all')
+    parser.add_argument('--figure', choices=['all', '1', '2', '3', '4'], default='all')
     args = parser.parse_args()
 
     database = args.database.resolve()
@@ -108,7 +92,7 @@ def main() -> None:
     output.mkdir(parents=True, exist_ok=True)
     os.environ.setdefault('MPLCONFIGDIR', str(output / '.mplconfig'))
     os.environ.setdefault('MPLBACKEND', 'Agg')
-    figures = ['1', '2', '3', '4'] if args.figure == 'all' else [args.figure] if args.figure != '5' else []
+    figures = ['1', '2', '3', '4'] if args.figure == 'all' else [args.figure]
 
     inputs = []
     if figures:
@@ -117,16 +101,13 @@ def main() -> None:
             inputs = extract_inputs(database, data, figures)
             draw_scientific(data, output, figures)
 
-    static = copy_static(output, args.figure)
     receipt = {
         'run_utc': datetime.now(timezone.utc).isoformat(),
         'database': str(database) if figures else None,
         'output': str(output),
         'figure': args.figure,
         'redrawn': figures,
-        'copied': static,
         'inputs': inputs,
-        'figure1a_source': str(AUTHOR_PANEL) if '1' in figures else None,
         'python': sys.version.split()[0],
         'packages': {name: importlib.metadata.version(name) for name in
                      ['numpy', 'pandas', 'matplotlib', 'logomaker', 'PyMuPDF', 'Pillow']},

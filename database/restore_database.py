@@ -14,7 +14,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--gzip', type=Path, default=Path(__file__).resolve().parent / 'klaatlas.sqlite.gz')
     parser.add_argument('--output', type=Path, default=Path(__file__).resolve().parent / 'klaatlas.sqlite')
-    parser.add_argument('--sha256', default='06f229562db8b9da9f15d1a9281d8227b18de99442220d4987a186999c3b1b51')
+    parser.add_argument('--sha256', default='ea52a9ebc2ad8e69995f91e353f720e1221562c8c4d001deab911a29db66d171')
     args = parser.parse_args()
     source = args.gzip.resolve()
     target = args.output.resolve()

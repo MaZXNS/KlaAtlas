@@ -1,18 +1,19 @@
 {
   "status": "PASS",
+  "run_utc": "2026-11-14T10:21:21.481319+00:00",
   "database": {
-    "sha256": "06f229562db8b9da9f15d1a9281d8227b18de99442220d4987a186999c3b1b51",
-    "bytes": 1910112256,
+    "sha256": "ea52a9ebc2ad8e69995f91e353f720e1221562c8c4d001deab911a29db66d171",
     "quick_check": "ok",
     "counts": {
       "sites": 212444,
       "evidence": 568654,
+      "proteins": 46280,
+      "publications": 7139,
       "sources": 247,
-      "proteins": 46280
-    },
-    "sqlite": "3.42.0"
+      "sequences": 34485,
+      "figure_data": 26
+    }
   },
-  "run_utc": "2026-11-14T08:12:55.300697+00:00",
   "environment": {
     "python": "3.11.4",
     "numpy": "2.4.6",
@@ -34,10 +35,6 @@
     {
       "input": "F1/publication_years.tsv",
       "sha256": "8767d0944ff994c9cc01ada7f937c70a0e3c7603c7d10cfc05fded17143cb64d"
-    },
-    {
-      "input": "F1/selection.json",
-      "sha256": "b72999cf0f189641d2e920ba23c8f4e5722a305df6326aace189f6167784c5ff"
     },
     {
       "input": "F1/source_accumulation.tsv",
@@ -134,99 +131,28 @@
   ],
   "figures": [
     {
-      "filename": "Figure_1.pdf",
-      "reference": "FINAL/02_submission_V2_20261105/files/KlaAtlas_Figure_1.pdf",
-      "redrawn_sha256": "3315c8c1d8dcd5e6e4ae766f67777526d135e37716b3e86cba97ab93589655bc",
-      "reference_sha256": "30d91101c087ef50ba282c236d297a8e1aa8a2675096e30514cd295a757190a9",
-      "pages": [
-        {
-          "page": 1,
-          "width_pt": 504.0,
-          "height_pt": 520.98876953125,
-          "text_tokens_match": true,
-          "rendering_pixels_exact": true,
-          "mean_abs_rgb_channel_delta_0_to_255": 0.0,
-          "fraction_rgb_channel_delta_gte_32": 0.0
-        },
-        {
-          "page": 2,
-          "width_pt": 504.0,
-          "height_pt": 561.2598266601562,
-          "text_tokens_match": true,
-          "rendering_pixels_exact": false,
-          "mean_abs_rgb_channel_delta_0_to_255": 0.15449241,
-          "fraction_rgb_channel_delta_gte_32": 0.00148162
-        }
-      ]
+      "file": "Figure_1.pdf",
+      "pages": 1,
+      "text_tokens_equal": true,
+      "reference_sha256": "57b0ea6ec7ab22d751eb6bee8c5b84bcc8ffa6d277e27ce657db0d23ca3fa0f4"
     },
     {
-      "filename": "Figure_2.pdf",
-      "reference": "FINAL/02_submission_V2_20261105/files/KlaAtlas_Figure_2.pdf",
-      "redrawn_sha256": "7ffcd654aa51f75fe8cd48d3e1d48710729a9b866921e60a6f5e6293dfb9f201",
-      "reference_sha256": "4bbb55f33e6199c533954168db00d6ab8dabdb41aad6d60d3e41b25f0f9ca756",
-      "pages": [
-        {
-          "page": 1,
-          "width_pt": 504.0,
-          "height_pt": 501.1199951171875,
-          "text_tokens_match": true,
-          "rendering_pixels_exact": false,
-          "mean_abs_rgb_channel_delta_0_to_255": 0.34991779,
-          "fraction_rgb_channel_delta_gte_32": 0.00285366
-        }
-      ]
+      "file": "Figure_2.pdf",
+      "pages": 1,
+      "text_tokens_equal": true,
+      "reference_sha256": "4bbb55f33e6199c533954168db00d6ab8dabdb41aad6d60d3e41b25f0f9ca756"
     },
     {
-      "filename": "Figure_3.pdf",
-      "reference": "FINAL/02_submission_V2_20261105/files/KlaAtlas_Figure_3.pdf",
-      "redrawn_sha256": "451e15a5d5bfb3676356acd625b51d13e33e83d02966c0d490d71b585990e71a",
-      "reference_sha256": "c03a6494a7c5b60f90f5bb1993add9738b226bfb5a1b500e02d3b576467821a0",
-      "pages": [
-        {
-          "page": 1,
-          "width_pt": 436.4181823730469,
-          "height_pt": 540.0,
-          "text_tokens_match": true,
-          "rendering_pixels_exact": false,
-          "mean_abs_rgb_channel_delta_0_to_255": 0.00456677,
-          "fraction_rgb_channel_delta_gte_32": 0.0
-        }
-      ]
+      "file": "Figure_3.pdf",
+      "pages": 1,
+      "text_tokens_equal": true,
+      "reference_sha256": "c03a6494a7c5b60f90f5bb1993add9738b226bfb5a1b500e02d3b576467821a0"
     },
     {
-      "filename": "Figure_4.pdf",
-      "reference": "FINAL/02_submission_V2_20261105/files/KlaAtlas_Figure_4.pdf",
-      "redrawn_sha256": "0f36d38610cf40f290cd31ab2f5453a8c5b4c80d7c9ec4f74b17e29077d928ad",
-      "reference_sha256": "30567788644e3c2dd2bc5316d9119f58476e96300a5cd67c65b2a89552daa24e",
-      "pages": [
-        {
-          "page": 1,
-          "width_pt": 504.0,
-          "height_pt": 623.6220703125,
-          "text_tokens_match": true,
-          "rendering_pixels_exact": true,
-          "mean_abs_rgb_channel_delta_0_to_255": 0.0,
-          "fraction_rgb_channel_delta_gte_32": 0.0
-        }
-      ]
-    },
-    {
-      "filename": "Figure_5.pdf",
-      "reference": "FINAL/02_submission_V2_20261105/files/KlaAtlas_Figure_5.pdf",
-      "copied_bytes_match": true,
-      "reference_sha256": "89d053c39e8eade0ddd8ef359c67ad6c2fe85bef2e8bc15573570c9933ebaacb"
-    },
-    {
-      "filename": "Supporting_Information.pdf",
-      "reference": "FINAL/02_submission_V2_20261105/files/KlaAtlas_Supporting_Information.pdf",
-      "copied_bytes_match": true,
-      "reference_sha256": "c617b259ecd655d36d2f2e1e9ef326b7f5ff64602dde8691c0de35d458848090"
-    },
-    {
-      "filename": "TOC_Graphic.pdf",
-      "reference": "FINAL/02_submission_V2_20261105/files/KlaAtlas_TOC_Graphic.pdf",
-      "copied_bytes_match": true,
-      "reference_sha256": "03ea9243062fbb53dff6dc1b6248732bbfeb4ef45484a24b67044085cdfdf196"
+      "file": "Figure_4.pdf",
+      "pages": 1,
+      "text_tokens_equal": true,
+      "reference_sha256": "30567788644e3c2dd2bc5316d9119f58476e96300a5cd67c65b2a89552daa24e"
     }
   ]
 }
