@@ -1,0 +1,108 @@
+{
+  "schema_version": "klaatlas_minimal_github_package_v1",
+  "package_version": "v2-20261114",
+  "build_date": "2026-11-14",
+  "source_database": {
+    "path": "database/kla_atlas.sqlite",
+    "run_id": "ROOT-MIN10-CONSERVATIVE-GROUP-20261104",
+    "sha256": "b17bbba4697d63772b24ab7198c37cbeb667de149cf8b02149216fad301ae552",
+    "scientific_cutoff": "2026-10-24"
+  },
+  "minimal_database": {
+    "gzip_path": "database/klaatlas.sqlite.gz",
+    "gzip_bytes": 361764164,
+    "gzip_sha256": "4315f9d515dccefbeed7ec7ee3a5d9df7f6669e667b6273296a7f18464308a90",
+    "sqlite_bytes": 1910112256,
+    "sqlite_sha256": "06f229562db8b9da9f15d1a9281d8227b18de99442220d4987a186999c3b1b51",
+    "tables": {
+      "sites": {
+        "rows": 212444,
+        "columns": 43
+      },
+      "evidence": {
+        "rows": 568654,
+        "columns": 58
+      },
+      "proteins": {
+        "rows": 46280,
+        "columns": 13
+      },
+      "publications": {
+        "rows": 7139,
+        "columns": 17
+      },
+      "sources": {
+        "rows": 247,
+        "columns": 22
+      },
+      "sequences": {
+        "rows": 34485,
+        "columns": 3
+      },
+      "figure_data": {
+        "rows": 27,
+        "columns": 4
+      }
+    }
+  },
+  "figures": {
+    "static": [
+      "Figure_1.pdf",
+      "Figure_2.pdf",
+      "Figure_3.pdf",
+      "Figure_4.pdf",
+      "Figure_5.pdf",
+      "Supporting_Information.pdf",
+      "TOC_Graphic.pdf"
+    ],
+    "generated_from_database": [
+      "Figure_1.pdf",
+      "Figure_2.pdf",
+      "Figure_3.pdf",
+      "Figure_4.pdf"
+    ],
+    "static_only": [
+      "Figure_5.pdf",
+      "Supporting_Information.pdf",
+      "TOC_Graphic.pdf"
+    ],
+    "figure1a_author_asset": "assets/Figure_1a_User_Reviewed_FORMATTED.pdf",
+    "figure1a_author_sha256": "4e45bbde2ea1a5bb10df3c410227838b3f2638eb2b066fd858eab6e17e43070a",
+    "figure1_uploaded_sha256": "30d91101c087ef50ba282c236d297a8e1aa8a2675096e30514cd295a757190a9",
+    "figure1a_source": "Latest_User_Figure_20261105/Figure_1a_User_Reviewed_FORMATTED.pdf",
+    "figure1a_screening_counts": {
+      "deduplicated": 7531,
+      "initially_excluded": 6068,
+      "detailed_assessment": 1463,
+      "detailed_exclusions": 1319,
+      "source_reports": 144,
+      "source_tables": 247
+    },
+    "figure1bf_renderer_sha256": "d213c4a44d9c0de8b52004557125b935e35c67265a8fbc91e39a619b1acd95c0",
+    "figure1bf_coverage_parent_renderer_sha256": "3db1cfa1c3e7f8c3812a1dff70d43114af1b98cf98fd09b85b13a4d1d4eb4182",
+    "figure1bf_coverage_submitted_scale": "log10, 0.5 bar baseline, 1/10/100 ticks"
+  },
+  "code": {
+    "entry": "make_figures.py",
+    "modules": [
+      "figure1bf.py",
+      "coverage_panel.py",
+      "figure2.py",
+      "figure3.py",
+      "figure4.py",
+      "plotting_common.py",
+      "figure_alignment.py",
+      "functional_panels.py",
+      "heatmap_style.py"
+    ],
+    "analysis_included": false
+  },
+  "limitations": [
+    "The minimal database has curated and standardized site/evidence extracts and frozen plotting inputs; it has no model, structure, domain or annotation tables.",
+    "Figure 2-4 are redrawn from figure_data blobs, not recomputed from site/evidence extracts.",
+    "Figure 1a is the frozen author-approved panel. Panels b–f use the frozen plotting inputs.",
+    "Figure 5 is a browser-screenshot composite and is supplied as a static PDF.",
+    "Publications retains all 7,139 screened records. The included-or-supplementary tier has a separate scope from the 144 source reports used in Figure 1."
+  ],
+  "redraw_revision_date": "2026-11-14"
+}

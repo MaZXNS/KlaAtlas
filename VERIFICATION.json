@@ -1,0 +1,232 @@
+{
+  "status": "PASS",
+  "database": {
+    "sha256": "06f229562db8b9da9f15d1a9281d8227b18de99442220d4987a186999c3b1b51",
+    "bytes": 1910112256,
+    "quick_check": "ok",
+    "counts": {
+      "sites": 212444,
+      "evidence": 568654,
+      "sources": 247,
+      "proteins": 46280
+    },
+    "sqlite": "3.42.0"
+  },
+  "run_utc": "2026-11-14T08:12:55.300697+00:00",
+  "environment": {
+    "python": "3.11.4",
+    "numpy": "2.4.6",
+    "pandas": "3.0.5",
+    "matplotlib": "3.11.1",
+    "logomaker": "0.8.7",
+    "PyMuPDF": "1.28.2",
+    "Pillow": "12.3.0"
+  },
+  "input_manifest": [
+    {
+      "input": "F1/counts.json",
+      "sha256": "c8222825837ed0f1b2b1f53d8fd4c101f47ee0badc595e2297d10e2c139f0741"
+    },
+    {
+      "input": "F1/position_agreement.tsv",
+      "sha256": "2a7f373782421ed27928df8737c4685c68a0e357e913f7c088f3bf38075269b8"
+    },
+    {
+      "input": "F1/publication_years.tsv",
+      "sha256": "8767d0944ff994c9cc01ada7f937c70a0e3c7603c7d10cfc05fded17143cb64d"
+    },
+    {
+      "input": "F1/selection.json",
+      "sha256": "b72999cf0f189641d2e920ba23c8f4e5722a305df6326aace189f6167784c5ff"
+    },
+    {
+      "input": "F1/source_accumulation.tsv",
+      "sha256": "d5cadd03936958848af205294685f9bae0d86cf2a46ccf0de88ac1601292cb0c"
+    },
+    {
+      "input": "F1/taxon_counts.tsv",
+      "sha256": "5f7e1c628407b6e402684ecd0168c7d5881c501d1e9a07baecb8ff6b6723fc5e"
+    },
+    {
+      "input": "F2/clustering.tsv",
+      "sha256": "c00ad71da507c95ee913a5a747c2e71474fe7765eaa02e2611a8396da9494c93"
+    },
+    {
+      "input": "F2/coverage.tsv.gz",
+      "sha256": "3d34cd8239c37d322ea49247e19dfa350e8470b0b4686189dde902a8a49f2bdd"
+    },
+    {
+      "input": "F2/length_profiles.tsv",
+      "sha256": "8538e1f089f8e4b85a8e7cff10266f36b95d34b29a01a4095a8a1746cf209b0c"
+    },
+    {
+      "input": "F2/localization.tsv",
+      "sha256": "9de6fd32157f771ddd479cfb078ba13d4cf31a48015b6f52bd39a3d62f67c219"
+    },
+    {
+      "input": "F2/peptide_geometry.tsv",
+      "sha256": "1d5a2b0570af385b4cf75bf1a2675e3ab37f9cec2478681ec7599b81c77c2f3d"
+    },
+    {
+      "input": "F2/positions.tsv",
+      "sha256": "7ac95c8c027219c996430d36d9edbbe89b843b9517afcd2bfebfe609c1274372"
+    },
+    {
+      "input": "F2/terminal_tests.tsv",
+      "sha256": "92f0c295e9f40916060cafceb0d1596b06959b246d39430d1a02e2999d882873"
+    },
+    {
+      "input": "F3/histone_denominators.tsv",
+      "sha256": "7ad42578b7e95f779b6ea4540064debb7c43105290b53740c2f3b94ba114f19f"
+    },
+    {
+      "input": "F3/histone_effects.tsv",
+      "sha256": "6302c9afd231916ef41c741870fb6c92af7f1a4366f3ab6c7b3481b2af30b5ca"
+    },
+    {
+      "input": "F3/logo.tsv",
+      "sha256": "8eb8730a91c014772fd4796c0453fa962207e3f36cf25a3c3047cf046299ae73"
+    },
+    {
+      "input": "F3/sequence_effects.tsv",
+      "sha256": "8c3b3344cd0c27b55cd77bddc4ad40b4d8d988ca7abfe8aee544302286b49473"
+    },
+    {
+      "input": "F3/symmetry.tsv",
+      "sha256": "e2d4d195b1c56ee823a351d3181e63c619b72202420acdfb461902764bad7ccc"
+    },
+    {
+      "input": "F4/compartment_effects.tsv",
+      "sha256": "9d58f56624d43ca10f452b0c6af95c3108989dbc388c930b0dbaa31925823a9c"
+    },
+    {
+      "input": "F4/enrichment.tsv",
+      "sha256": "35eb0ebfc58e34bf6ecafe3e47d072822aa2a3f42dc6cdf1e3b5b532fca2038f"
+    },
+    {
+      "input": "F4/go_terms.tsv",
+      "sha256": "54260d31db04bca4bb19752b74da9a59b20a7a26828ba78d8066080d2c7effbc"
+    },
+    {
+      "input": "F4/kegg_terms.tsv",
+      "sha256": "aa9550423e28037db49b07b10f63f50cd1706a59473880fb0ee4862a185dd68f"
+    },
+    {
+      "input": "F4/localizations.tsv",
+      "sha256": "f327267c1829ac9cf45f9f4c305c00a9bb40624c6aafa0f09a16aceb4185e80c"
+    },
+    {
+      "input": "F4/rsa_difference.tsv",
+      "sha256": "2b92246e0ca4eff8fd968127e1f14a13c79d4054cdefeb8beec235041d501a1c"
+    },
+    {
+      "input": "F4/rsa_effects.tsv",
+      "sha256": "6ddcb7f64fb3e12274e64953a48a6cf53445d28dbe837c8157374681861a3a44"
+    },
+    {
+      "input": "F4/rsa_histogram.tsv",
+      "sha256": "633c633995d3aa64e96c0e151530966d37af98bc00bdff67134b729c46290b29"
+    },
+    {
+      "input": "F4/study_registry.tsv",
+      "sha256": "9b42b786b4baa5a45f02d8768725aa89dcbc7921a078193c190b65fd4abf5cdc"
+    }
+  ],
+  "figures": [
+    {
+      "filename": "Figure_1.pdf",
+      "reference": "FINAL/02_submission_V2_20261105/files/KlaAtlas_Figure_1.pdf",
+      "redrawn_sha256": "3315c8c1d8dcd5e6e4ae766f67777526d135e37716b3e86cba97ab93589655bc",
+      "reference_sha256": "30d91101c087ef50ba282c236d297a8e1aa8a2675096e30514cd295a757190a9",
+      "pages": [
+        {
+          "page": 1,
+          "width_pt": 504.0,
+          "height_pt": 520.98876953125,
+          "text_tokens_match": true,
+          "rendering_pixels_exact": true,
+          "mean_abs_rgb_channel_delta_0_to_255": 0.0,
+          "fraction_rgb_channel_delta_gte_32": 0.0
+        },
+        {
+          "page": 2,
+          "width_pt": 504.0,
+          "height_pt": 561.2598266601562,
+          "text_tokens_match": true,
+          "rendering_pixels_exact": false,
+          "mean_abs_rgb_channel_delta_0_to_255": 0.15449241,
+          "fraction_rgb_channel_delta_gte_32": 0.00148162
+        }
+      ]
+    },
+    {
+      "filename": "Figure_2.pdf",
+      "reference": "FINAL/02_submission_V2_20261105/files/KlaAtlas_Figure_2.pdf",
+      "redrawn_sha256": "7ffcd654aa51f75fe8cd48d3e1d48710729a9b866921e60a6f5e6293dfb9f201",
+      "reference_sha256": "4bbb55f33e6199c533954168db00d6ab8dabdb41aad6d60d3e41b25f0f9ca756",
+      "pages": [
+        {
+          "page": 1,
+          "width_pt": 504.0,
+          "height_pt": 501.1199951171875,
+          "text_tokens_match": true,
+          "rendering_pixels_exact": false,
+          "mean_abs_rgb_channel_delta_0_to_255": 0.34991779,
+          "fraction_rgb_channel_delta_gte_32": 0.00285366
+        }
+      ]
+    },
+    {
+      "filename": "Figure_3.pdf",
+      "reference": "FINAL/02_submission_V2_20261105/files/KlaAtlas_Figure_3.pdf",
+      "redrawn_sha256": "451e15a5d5bfb3676356acd625b51d13e33e83d02966c0d490d71b585990e71a",
+      "reference_sha256": "c03a6494a7c5b60f90f5bb1993add9738b226bfb5a1b500e02d3b576467821a0",
+      "pages": [
+        {
+          "page": 1,
+          "width_pt": 436.4181823730469,
+          "height_pt": 540.0,
+          "text_tokens_match": true,
+          "rendering_pixels_exact": false,
+          "mean_abs_rgb_channel_delta_0_to_255": 0.00456677,
+          "fraction_rgb_channel_delta_gte_32": 0.0
+        }
+      ]
+    },
+    {
+      "filename": "Figure_4.pdf",
+      "reference": "FINAL/02_submission_V2_20261105/files/KlaAtlas_Figure_4.pdf",
+      "redrawn_sha256": "0f36d38610cf40f290cd31ab2f5453a8c5b4c80d7c9ec4f74b17e29077d928ad",
+      "reference_sha256": "30567788644e3c2dd2bc5316d9119f58476e96300a5cd67c65b2a89552daa24e",
+      "pages": [
+        {
+          "page": 1,
+          "width_pt": 504.0,
+          "height_pt": 623.6220703125,
+          "text_tokens_match": true,
+          "rendering_pixels_exact": true,
+          "mean_abs_rgb_channel_delta_0_to_255": 0.0,
+          "fraction_rgb_channel_delta_gte_32": 0.0
+        }
+      ]
+    },
+    {
+      "filename": "Figure_5.pdf",
+      "reference": "FINAL/02_submission_V2_20261105/files/KlaAtlas_Figure_5.pdf",
+      "copied_bytes_match": true,
+      "reference_sha256": "89d053c39e8eade0ddd8ef359c67ad6c2fe85bef2e8bc15573570c9933ebaacb"
+    },
+    {
+      "filename": "Supporting_Information.pdf",
+      "reference": "FINAL/02_submission_V2_20261105/files/KlaAtlas_Supporting_Information.pdf",
+      "copied_bytes_match": true,
+      "reference_sha256": "c617b259ecd655d36d2f2e1e9ef326b7f5ff64602dde8691c0de35d458848090"
+    },
+    {
+      "filename": "TOC_Graphic.pdf",
+      "reference": "FINAL/02_submission_V2_20261105/files/KlaAtlas_TOC_Graphic.pdf",
+      "copied_bytes_match": true,
+      "reference_sha256": "03ea9243062fbb53dff6dc1b6248732bbfeb4ef45484a24b67044085cdfdf196"
+    }
+  ]
+}

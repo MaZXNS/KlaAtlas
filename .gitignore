@@ -1,11 +1,7 @@
-.venv/
+database/klaatlas.sqlite
+generated_figures/
+generated_test*/
+.mplconfig/
 __pycache__/
-.pytest_cache/
-*.py[cod]
+*.pyc
 .DS_Store
-.env
-.env.*
-work/
-outputs/
-results/
-*.log
