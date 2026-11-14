@@ -1,3 +1,7 @@
-# 分析图绘制
+# Drawing the Analysis Figures
 
-从包根目录运行 `python make_figures.py --output generated_figures`。`figure1bf.py` 与 `coverage_panel.py` 绘制图谱概览；`figure2.py`、`figure3.py` 和 `figure4.py` 分别绘制位点分布、序列特征以及结构与功能分析。`plotting_common.py` 和 `figure_alignment.py` 负责图形导出与布局，`functional_panels.py` 和 `heatmap_style.py` 提供功能分析面板。
+From the package root, run `python make_figures.py --output generated_figures`.
+
+`figure1bf.py` and `coverage_panel.py` draw the atlas overview. `figure2.py`, `figure3.py` and `figure4.py` draw the site distribution, sequence features, and structural and functional analyses, respectively. `plotting_common.py` and `figure_alignment.py` handle figure export and layout. `functional_panels.py` and `heatmap_style.py` provide the functional analysis panels.
+
+See the [package guide](../README.md) for setup and figure selection, or explore [KlaAtlas online](https://www.kla-atlas.com/).
